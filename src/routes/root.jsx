@@ -21,24 +21,21 @@ export default function Root() {
             <input
               id="q"
               aria-label="Search company"
-              placeholder="Search"
+              placeholder="Search company"
               type="search"
               name="q"
             />
             <div id="search-spinner" aria-hidden hidden={true} />
             <div className="sr-only" aria-live="polite"></div>
           </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
         </div>
         <nav>
           <ul>
             <li>
-              <a href={`/co2`}>CO2 Emissions</a>
+              <a href={`/co2`}>CO2 Emissions by Year</a>
             </li>
             <li>
-              <a href={`/elec`}>Electricity Emissions</a>
+              <a href={`/elec`}>Electricity Emissions by Year</a>
             </li>
           </ul>
         </nav>
