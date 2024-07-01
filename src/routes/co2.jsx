@@ -5,7 +5,7 @@ import co2data from "../data/co2Data.json"; // Import JSON data
 
 const Co2Chart = () => {
   useEffect(() => {
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('co2Chart');
     
     if (!ctx) return;
 
@@ -43,6 +43,26 @@ const Co2Chart = () => {
       type: 'line',
       data: data,
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'CO2 Emissions by Year'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'CO2 Emissions (tons)'
+            }
+          }
+        },
         onClick: (e) => {
           const canvasPosition = getRelativePosition(e, chart);
 
@@ -70,8 +90,8 @@ const Co2Chart = () => {
   };
 
   return (
-    <div>
-      <canvas id="myChart" width="400" height="400"></canvas>
+    <div className="chart-container">
+      <canvas id="co2Chart" width="600" height="400"></canvas>
     </div>
   );
 };

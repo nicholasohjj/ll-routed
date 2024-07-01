@@ -43,6 +43,26 @@ const ElecChart = () => {
       type: 'line',
       data: data,
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Electricity Consumption by Year'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Year'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Electricity Consumption (MWh)'
+            }
+          }
+        },
         onClick: (e) => {
           const canvasPosition = getRelativePosition(e, chart);
 
@@ -70,8 +90,8 @@ const ElecChart = () => {
   };
 
   return (
-    <div>
-      <canvas id="elecChart" width="400" height="400"></canvas>
+    <div className="chart-container">
+      <canvas id="elecChart" width="600" height="400"></canvas>
     </div>
   );
 };
