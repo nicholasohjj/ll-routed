@@ -1,19 +1,20 @@
 import React from "react";
 import { useNavigate, Outlet } from "react-router-dom";
+import "../styles/root.css";
 
 export default function Root() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogin = () => {
-        navigate("/login");
-    }
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
   return (
     <>
       <div id="sidebar">
         <h1>Leong Lee API</h1>
         <div>
-            <button onClick={handleLogin}>Login</button>
+          <button onClick={handleLogin}>Login</button>
         </div>
         <div>
           <form id="search-form" role="search">
