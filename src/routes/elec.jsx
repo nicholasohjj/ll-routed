@@ -1,12 +1,12 @@
 import React from "react";
 
-const Co2Chart = () => {
+const ElecChart = () => {
     return (
         <div>
-        <h1>CO2 Emissions</h1>
+        <h1>Elec Emissions</h1>
         <p>Coming soon...</p>
         </div>
     );
     }
 
-export default Co2Chart;
+export default ElecChart;

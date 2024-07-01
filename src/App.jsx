@@ -4,6 +4,7 @@ import Root from "./routes/root";
 import ErrorPage from "./error";
 import Login from "./routes/login";
 import Co2Chart from "./routes/co2";
+import ElecChart from "./routes/elec";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,6 +17,10 @@ function App() {
           path: "/co2",
           element: <Co2Chart />,
         },
+        {
+          path: "/elec",
+          element: <ElecChart />,
+        }
       ]
     },
     {
