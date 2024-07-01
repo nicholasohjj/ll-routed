@@ -1,15 +1,25 @@
 import React from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 
 export default function Root() {
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        navigate("/login");
+    }
+
   return (
     <>
       <div id="sidebar">
-        <h1>React Router Contacts</h1>
+        <h1>Leong Lee API</h1>
+        <div>
+            <button onClick={handleLogin}>Login</button>
+        </div>
         <div>
           <form id="search-form" role="search">
             <input
               id="q"
-              aria-label="Search contacts"
+              aria-label="Search company"
               placeholder="Search"
               type="search"
               name="q"
@@ -24,15 +34,17 @@ export default function Root() {
         <nav>
           <ul>
             <li>
-              <a href={`/contacts/1`}>Your Name</a>
+              <a href={`/co2`}>CO2 Emissions</a>
             </li>
             <li>
-              <a href={`/contacts/2`}>Your Friend</a>
+              <a href={`/elec`}>Electricity Emissions</a>
             </li>
           </ul>
         </nav>
       </div>
-      <div id="detail"></div>
+      <div id="detail">
+        <Outlet />
+      </div>
     </>
   );
 }
