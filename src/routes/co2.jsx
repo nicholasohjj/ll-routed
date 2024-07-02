@@ -1,10 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from 'chart.js/auto';
 import { getRelativePosition } from 'chart.js/helpers';
 import co2data from "../data/co2Data.json"; // Import JSON data
+import { getCO2Emissions } from "../services/dataService";
+
 
 const Co2Chart = () => {
+    const [co2Data, setCo2Data] = useState(null);
+    useEffect(() => {
+        getCO2Emissions("Vrld5Hngy49kGStJdcV8s9cCIqWB34AL2wBDetVe").then((data) => {
+            setCo2Data(data);
+        });
+    }, []);
+
   useEffect(() => {
+    console.log(co2Data);
     const ctx = document.getElementById('co2Chart');
     
     if (!ctx) return;

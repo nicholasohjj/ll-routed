@@ -7,12 +7,14 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.606.0",
+    "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "d3": "^7.9.0",
     "react": "^17.0.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^17.0.0",
-    "react-router-dom": "^6.24.0"
+    "react-router-dom": "^6.24.0",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "vite": "^1.0.0-rc.13",
