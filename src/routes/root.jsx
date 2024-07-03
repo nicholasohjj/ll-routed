@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import { useNavigate, Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyle = createGlobalStyle
-`:root {
+const GlobalStyle = createGlobalStyle`:root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(240, 10%, 3.9%);
   --card: hsl(0, 0%, 100%);
@@ -420,11 +420,54 @@ i {
   align-items: center;
   justify-content: center;
   width: 100%;
-}`
+}`;
 
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
 
 export default function Root() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!sessionStorage.idToken || !sessionStorage.accessToken) {
+      navigate("/login");
+    } else {
+      var idToken = parseJwt(sessionStorage.idToken.toString());
+      var accessToken = parseJwt(sessionStorage.accessToken.toString());
+      console.log(
+        "Amazon Cognito ID token encoded: " + sessionStorage.idToken.toString()
+      );
+      console.log("Amazon Cognito ID token decoded: ");
+      console.log(idToken);
+      console.log(
+        "Amazon Cognito access token encoded: " +
+          sessionStorage.accessToken.toString()
+      );
+      console.log("Amazon Cognito access token decoded: ");
+      console.log(accessToken);
+      console.log("Amazon Cognito refresh token: ");
+      console.log(sessionStorage.refreshToken);
+      console.log(
+        "Amazon Cognito example application. Not for use in production applications."
+      );
+    }
+  }, [navigate]);
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
 
   const handleLogin = () => {
     navigate("/login");
@@ -432,12 +475,16 @@ export default function Root() {
 
   return (
     <>
-      <GlobalStyle/>
+      <GlobalStyle />
 
       <div id="sidebar">
         <h1>Leong Lee API</h1>
         <div>
-          <button onClick={handleLogin}>Login</button>
+          {sessionStorage.idToken && sessionStorage.accessToken ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : <button onClick={handleLogin}>Login</button>}
+
+          
         </div>
         <div>
           <form id="search-form" role="search">
@@ -466,7 +513,6 @@ export default function Root() {
       <div id="detail">
         <Outlet />
       </div>
-
     </>
   );
 }

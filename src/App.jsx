@@ -5,6 +5,7 @@ import ErrorPage from "./error";
 import Login from "./routes/login";
 import Co2Chart from "./routes/co2";
 import ElecChart from "./routes/elec";
+import SignUp from "./routes/signup";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,7 +28,13 @@ function App() {
       path: "/login",
       element: <Login />,
       errorElement: <ErrorPage />,
-    }
+    },
+    {
+      path: "/signup",
+      element: <SignUp />,
+      errorElement: <ErrorPage />,
+    },
+
   ]);
 
   return (
