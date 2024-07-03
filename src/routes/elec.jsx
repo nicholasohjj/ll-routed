@@ -15,8 +15,8 @@ const ElecChart = () => {
     // Extract unique company codes
     const companies = [...new Set(parsedData.map(item => item.company_code))];
 
-    // Extract unique years
-    const uniqueYears = [...new Set(parsedData.map(item => item.year))];
+    // Extract unique years and sort them in ascending order
+    const uniqueYears = [...new Set(parsedData.map(item => item.year))].sort((a, b) => a - b);
 
     // Prepare datasets for each company
     const datasets = companies.map(company => {
