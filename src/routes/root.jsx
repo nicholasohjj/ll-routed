@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 
 import { useNavigate, Outlet } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import { UserContext } from "../context/userContext";
+
 
 const GlobalStyle = createGlobalStyle`:root {
   --background: hsl(0, 0%, 100%);
@@ -422,7 +424,7 @@ i {
   width: 100%;
 }`;
 
-function parseJwt(token) {
+const parseJwt = (token) => {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   var jsonPayload = decodeURIComponent(
@@ -437,8 +439,10 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-export default function Root() {
+const Root = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
 
   useEffect(() => {
     if (!sessionStorage.idToken || !sessionStorage.accessToken) {
@@ -446,22 +450,23 @@ export default function Root() {
     } else {
       var idToken = parseJwt(sessionStorage.idToken.toString());
       var accessToken = parseJwt(sessionStorage.accessToken.toString());
-      console.log(
-        "Amazon Cognito ID token encoded: " + sessionStorage.idToken.toString()
-      );
-      console.log("Amazon Cognito ID token decoded: ");
-      console.log(idToken);
-      console.log(
-        "Amazon Cognito access token encoded: " +
-          sessionStorage.accessToken.toString()
-      );
+      // console.log(
+      //   "Amazon Cognito ID token encoded: " + sessionStorage.idToken.toString()
+      // );
+      // console.log("Amazon Cognito ID token decoded: ");
+      // console.log(idToken);
+      // console.log(
+      //   "Amazon Cognito access token encoded: " +
+      //     sessionStorage.accessToken.toString()
+      // );
       console.log("Amazon Cognito access token decoded: ");
       console.log(accessToken);
-      console.log("Amazon Cognito refresh token: ");
-      console.log(sessionStorage.refreshToken);
-      console.log(
-        "Amazon Cognito example application. Not for use in production applications."
-      );
+      setUser(accessToken)
+      // console.log("Amazon Cognito refresh token: ");
+      // console.log(sessionStorage.refreshToken);
+      // console.log(
+      //   "Amazon Cognito example application. Not for use in production applications."
+      // );
     }
   }, [navigate]);
   const handleLogout = () => {
@@ -476,28 +481,21 @@ export default function Root() {
   return (
     <>
       <GlobalStyle />
-
       <div id="sidebar">
         <h1>Leong Lee API</h1>
         <div>
           {sessionStorage.idToken && sessionStorage.accessToken ? (
             <button onClick={handleLogout}>Logout</button>
-          ) : <button onClick={handleLogin}>Login</button>}
-
-          
+          ) : (
+            <button onClick={handleLogin}>Login</button>
+          )}
         </div>
         <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search company"
-              placeholder="Search company"
-              type="search"
-              name="q"
-            />
-            <div id="search-spinner" aria-hidden hidden={true} />
-            <div className="sr-only" aria-live="polite"></div>
-          </form>
+          <ul>
+            <li>
+              <a href={`/api-keys`}>My API Keys</a> {/* Add this line */}
+            </li>
+          </ul>
         </div>
         <nav>
           <ul>
@@ -516,3 +514,5 @@ export default function Root() {
     </>
   );
 }
+
+export default Root;

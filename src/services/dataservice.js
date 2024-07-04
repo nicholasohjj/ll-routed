@@ -17,3 +17,12 @@ export const getCO2Emissions = async (api_key) => {
         console.error(error);
     }
     };
+
+export const getApiKeys = async (user_id) => {
+    try {
+        const response = await axios.get(`${baseUrl}/keys/${user_id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}

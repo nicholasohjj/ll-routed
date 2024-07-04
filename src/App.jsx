@@ -6,6 +6,7 @@ import Login from "./routes/login";
 import Co2Chart from "./routes/co2";
 import ElecChart from "./routes/elec";
 import SignUp from "./routes/signup";
+import APIKeys from "./routes/apikey";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,8 +22,12 @@ function App() {
         {
           path: "/elec",
           element: <ElecChart />,
-        }
-      ]
+        },
+        {
+          path: "/api-keys",
+          element: <APIKeys />,
+        },
+      ],
     },
     {
       path: "/login",
@@ -34,12 +39,11 @@ function App() {
       element: <SignUp />,
       errorElement: <ErrorPage />,
     },
-
   ]);
 
   return (
     <>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </>
   );
 }
