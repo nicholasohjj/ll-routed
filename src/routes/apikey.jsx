@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getApiKeys } from "../services/dataService";
 import { UserContext } from "../context/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
