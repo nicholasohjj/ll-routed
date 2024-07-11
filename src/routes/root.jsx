@@ -482,7 +482,7 @@ const Root = () => {
     <>
       <GlobalStyle />
       <div id="sidebar">
-        <h1>Leong Lee API</h1>
+        <h1>EcoMetrics</h1>
         <div>
           {sessionStorage.idToken && sessionStorage.accessToken ? (
             <button onClick={handleLogout}>Logout</button>
