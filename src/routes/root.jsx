@@ -505,6 +505,9 @@ const Root = () => {
             <li>
               <a href={`/elec`}>Electricity Emissions by Year</a>
             </li>
+            <li>
+              <a href={`/bop`}>Balance of Payments</a>
+            </li>
           </ul>
         </nav>
       </div>

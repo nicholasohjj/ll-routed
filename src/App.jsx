@@ -7,6 +7,7 @@ import Co2Chart from "./routes/co2";
 import ElecChart from "./routes/elec";
 import SignUp from "./routes/signup";
 import APIKeys from "./routes/apikey";
+import BopChart from "./routes/bop";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App() {
           path: "/api-keys",
           element: <APIKeys />,
         },
+        {
+          path: "/bop",
+          element: <BopChart />,
+        }
       ],
     },
     {

@@ -1,38 +1,38 @@
 import React, { useEffect, useState } from "react";
 import Chart from 'chart.js/auto';
 import { getRelativePosition } from 'chart.js/helpers';
-import co2data from "../data/co2Data.json"; // Import JSON data
+import bopData from "../data/bopData.json"; // Import JSON data
 
-const Co2Chart = () => {
-    const [co2Data, setCo2Data] = useState(null);
+const bopChart = () => {
 
-    useEffect(() => {
-    }, []);
 
     useEffect(() => {
-        console.log(co2Data);
-        const ctx = document.getElementById('co2Chart');
+        if (!bopData) return;
+
+        console.log(bopData);
+        const ctx = document.getElementById('bopChart');
         
         if (!ctx) return;
 
         // Parse JSON body
-        const parsedData = JSON.parse(co2data.body);
+        const parsedData = JSON.parse(bopData.body);
 
-        // Extract unique company codes
-        const companies = [...new Set(parsedData.map(item => item.company_code))];
+        // Extract unique subcategories
+        const subcategories = [...new Set(parsedData.map(item => item.subcategory_id))];
 
         // Extract unique years and sort them in ascending order
         const uniqueYears = [...new Set(parsedData.map(item => item.year))].sort((a, b) => a - b);
 
-        // Prepare datasets for each company
-        const datasets = companies.map(company => {
-            const companyData = parsedData.filter(item => item.company_code === company);
+        // Prepare datasets for each subcategory
+        const datasets = subcategories.map(subcategory => {
+            const subcategoryData = parsedData.filter(item => item.subcategory_id === subcategory);
             const dataValues = uniqueYears.map(year => {
-                const dataPoint = companyData.find(item => item.year === year);
-                return dataPoint ? dataPoint.co2_emission_ton : null;
+                const dataPoint = subcategoryData.find(item => item.year === year);
+                return dataPoint ? dataPoint.value : null;
             });
+            const subcategoryName = subcategoryData.length > 0 ? subcategoryData[0].name : `Subcategory ${subcategory}`;
             return {
-                label: company,
+                label: subcategoryName,
                 data: dataValues,
                 fill: false,
                 borderColor: getRandomColor(), // Example function to generate random colors
@@ -52,7 +52,7 @@ const Co2Chart = () => {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'CO2 Emissions by Year'
+                        text: 'BoP Data by Year'
                     }
                 },
                 scales: {
@@ -65,7 +65,7 @@ const Co2Chart = () => {
                     y: {
                         title: {
                             display: true,
-                            text: 'CO2 Emissions (tons)'
+                            text: 'Values (Mill. USD)'
                         }
                     }
                 },
@@ -85,7 +85,7 @@ const Co2Chart = () => {
         return () => {
             chart.destroy();
         };
-    }, []);
+    }, [bopData]);
 
     // Function to generate random RGB color
     const getRandomColor = () => {
@@ -95,11 +95,33 @@ const Co2Chart = () => {
         return `rgb(${r}, ${g}, ${b})`;
     };
 
+    const uniqueEntries = new Set();
+
+// Filter unique subcategory_id and name
+const filteredData = JSON.parse(bopData.body).filter(entry => {
+    const key = `${entry.subcategory_id}-${entry.name}`;
+    if (uniqueEntries.has(key)) {
+      return false;
+    } else {
+      uniqueEntries.add(key);
+      return true;
+    }
+  });
+
+  const sortedData = filteredData.sort((a, b) => a.subcategory_id - b.subcategory_id);
+
+  // Map the sorted data to a list of unique strings
+  const uniqueStrings = sortedData.map(entry => `(${entry.subcategory_id},${entry.name})`);
+
+
     return (
         <div className="chart-container">
-            <canvas id="co2Chart" width="600" height="400"></canvas>
+            <canvas id="bopChart" width="600" height="400"></canvas>
+
+            {JSON.stringify(uniqueStrings)}
+
         </div>
     );
 };
 
-export default Co2Chart;
+export default bopChart;

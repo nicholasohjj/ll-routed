@@ -1,38 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Chart from 'chart.js/auto';
 import { getRelativePosition } from 'chart.js/helpers';
-import co2data from "../data/co2Data.json"; // Import JSON data
 
-const Co2Chart = () => {
-    const [co2Data, setCo2Data] = useState(null);
-
-    useEffect(() => {
-    }, []);
+const ReusableChart = ({ chartId, chartTitle, yAxisLabel, data, dataKey, labelKey }) => {
+    const chartRef = useRef(null);
 
     useEffect(() => {
-        console.log(co2Data);
-        const ctx = document.getElementById('co2Chart');
-        
+        if (!data) return;
+
+        const ctx = document.getElementById(chartId);
+
         if (!ctx) return;
 
-        // Parse JSON body
-        const parsedData = JSON.parse(co2data.body);
+        // Extract unique labels and sort them in ascending order
+        const uniqueLabels = [...new Set(data.map(item => item.year))].sort((a, b) => a - b);
 
-        // Extract unique company codes
-        const companies = [...new Set(parsedData.map(item => item.company_code))];
+        // Extract unique keys for the datasets
+        const uniqueKeys = [...new Set(data.map(item => item[dataKey]))];
 
-        // Extract unique years and sort them in ascending order
-        const uniqueYears = [...new Set(parsedData.map(item => item.year))].sort((a, b) => a - b);
-
-        // Prepare datasets for each company
-        const datasets = companies.map(company => {
-            const companyData = parsedData.filter(item => item.company_code === company);
-            const dataValues = uniqueYears.map(year => {
-                const dataPoint = companyData.find(item => item.year === year);
-                return dataPoint ? dataPoint.co2_emission_ton : null;
+        // Prepare datasets for each key
+        const datasets = uniqueKeys.map(key => {
+            const keyData = data.filter(item => item[dataKey] === key);
+            const dataValues = uniqueLabels.map(year => {
+                const dataPoint = keyData.find(item => item.year === year);
+                return dataPoint ? dataPoint.value : null;
             });
+            const keyName = keyData.length > 0 ? keyData[0][labelKey] : `Key ${key}`;
             return {
-                label: company,
+                label: keyName,
                 data: dataValues,
                 fill: false,
                 borderColor: getRandomColor(), // Example function to generate random colors
@@ -40,19 +35,19 @@ const Co2Chart = () => {
             };
         });
 
-        const data = {
-            labels: uniqueYears,
+        const chartData = {
+            labels: uniqueLabels,
             datasets: datasets
         };
 
         const chart = new Chart(ctx, {
             type: 'line',
-            data: data,
+            data: chartData,
             options: {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'CO2 Emissions by Year'
+                        text: chartTitle
                     }
                 },
                 scales: {
@@ -65,7 +60,7 @@ const Co2Chart = () => {
                     y: {
                         title: {
                             display: true,
-                            text: 'CO2 Emissions (tons)'
+                            text: yAxisLabel
                         }
                     }
                 },
@@ -82,10 +77,12 @@ const Co2Chart = () => {
             }
         });
 
+        chartRef.current = chart;
+
         return () => {
             chart.destroy();
         };
-    }, []);
+    }, [data, chartId, chartTitle, yAxisLabel, dataKey, labelKey]);
 
     // Function to generate random RGB color
     const getRandomColor = () => {
@@ -97,9 +94,9 @@ const Co2Chart = () => {
 
     return (
         <div className="chart-container">
-            <canvas id="co2Chart" width="600" height="400"></canvas>
+            <canvas id={chartId} width="600" height="400"></canvas>
         </div>
     );
 };
 
-export default Co2Chart;
+export default ReusableChart;
