@@ -108,6 +108,12 @@ const GlobalStyle = createGlobalStyle`
   .signup-link-text:hover {
     color: var(--primary-dark, #0056b3);
   }
+
+    .logo {
+    display: block;
+    margin: 0 auto 1.5rem;
+    width: 150px;
+  }
 `;
 
 const Login = () => {
@@ -167,6 +173,7 @@ const Login = () => {
 
       <div className="login-container">
         <div className="login-wrapper">
+          <img src="src\components\images.jpg" alt="Logo" className="logo" />
           <div>
             <h2 className="login-title">Sign in to your account</h2>
           </div>
@@ -218,5 +225,6 @@ const Login = () => {
     </>
   );
 };
+
 
 export default Login;
